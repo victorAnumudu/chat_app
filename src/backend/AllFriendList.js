@@ -154,4 +154,9 @@ export const chat = [
     {id:11, message: 'Ok', sender: 2},
     {id:12, message: 'Do have a nice day', sender: 2},
     {id:13, message: 'You too', sender: 1},
+    // {id:14, message: 'How is the family?', sender: 2},
+    // {id:15, message: 'We thank God', sender: 1},
+    // {id:16, message: 'Ok', sender: 2},
+    // {id:17, message: 'Do have a nice day', sender: 2},
+    // {id:18, message: 'You too', sender: 1},
 ]

@@ -68,7 +68,6 @@ function DashboardPage() {
       }));
       setMessageToSend("");
     }
-    // console.log(messageBoxSection.scrollTo(0,0))
   };
 
   // CALL API TO POPULATE FRIEND LIST
@@ -86,6 +85,10 @@ function DashboardPage() {
       setFilteredChats({ loading: false, data: chat });
     }, 1000);
   }, [activeUser]);
+
+  useEffect(()=>{  // FUNCTION TO MAKE THE CHAT SECTION ALWAYS SCROLLS TO BUTTON OF THE CHAT BOX SO USER CAN SEE LAST MESSAGE
+    messageBoxSection?.current?.scrollTo({top:messageBoxSection.current.scrollHeight, behavior: 'smooth'})
+  },[filteredChats])
 
   return (
     <div className="relative flex h-screen p-5 bg-slate-100 dark:bg-brown-dark">
@@ -141,14 +144,14 @@ function DashboardPage() {
                         return chat.sender == 2 ? (
                           <div
                             key={chat.id}
-                            className="p-2 max-w-[50%] rounded text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-start"
+                            className="p-2 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-start"
                           >
                             {chat?.message}
                           </div>
                         ) : (
                           <div
                             key={chat.id}
-                            className="p-2 max-w-[50%] rounded text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-end"
+                            className="p-2 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200  bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-end"
                           >
                             {chat?.message}
                           </div>
