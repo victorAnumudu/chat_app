@@ -94,7 +94,7 @@ function DashboardPage() {
     <div className="relative flex h-screen p-5 bg-slate-100 dark:bg-brown-dark">
       <div className="absolute left-0 top-0 z-0 w-full h-28 bg-sky-300 dark:bg-brown-light"></div>
       <Containter>
-        <div className="hidden md:block w-[500px] border-r-4">
+        <div className="w-full md:block md:w-[500px] md:border-r-4">
           <AsideComponent className={"flex flex-col"}>
             <AsideHeader />
             <div className="mt-4 mb-2 px-4 md:px-8">
@@ -127,7 +127,7 @@ function DashboardPage() {
             </div>
           </AsideComponent>
         </div>
-        <div className="w-full">
+        <div className="hidden md:block md:w-full">
           <MainComponent className={"flex flex-col"}>
             {activeUser ? (
               <>
@@ -144,14 +144,14 @@ function DashboardPage() {
                         return chat.sender == 2 ? (
                           <div
                             key={chat.id}
-                            className="p-2 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-start"
+                            className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-start"
                           >
                             {chat?.message}
                           </div>
                         ) : (
                           <div
                             key={chat.id}
-                            className="p-2 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200  bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-end"
+                            className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200  bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-end"
                           >
                             {chat?.message}
                           </div>
