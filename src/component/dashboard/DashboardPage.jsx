@@ -9,6 +9,7 @@ import MainHeader from "./mainContent/MainHeader";
 import AsideSearchFriends from "./asideContent/AsideSearchFriends";
 import FriendList from "./asideContent/FriendList";
 import SearchIcon from "../../assets/images/icons/search.svg";
+import LoadingIndicator from "../general/LoadingIndicator";
 
 import AllFriendList from "../../backend/AllFriendList";
 import { chat } from "../../backend/AllFriendList";
@@ -107,7 +108,7 @@ function DashboardPage() {
             </div>
             <div className="pb-2 px-4 md:px-8 flex-grow flex flex-col items-center overflow-y-auto scrollbar">
               {filteredfriends.loading ? (
-                <p className="loading-dots">Loading</p>
+                <LoadingIndicator text='searching' />
               ) : filteredfriends?.data?.length > 0 ? (
                 filteredfriends?.data?.map((friend) => (
                   <FriendList
