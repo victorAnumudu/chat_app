@@ -22,8 +22,8 @@ function Register() {
         navigate('../signup_verify',{state:{verify:true}})
     }
     return(
-        <div className='p-3 w-full min-w-[400px] rounded-md flex flex-col justify-center'>
-            <div className='w-[70%] min-w-[350px] mx-auto'>
+        <div className='p-3 w-full rounded-md flex flex-col justify-center'>
+            <div className='w-[90%] lg:w-[70%] mx-auto'>
                 <div className='w-full'>
                     <Input type='text' name='number' handleChange={handleChange} label='Enter Your Phone Number' />
                 </div>
