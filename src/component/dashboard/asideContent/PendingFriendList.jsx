@@ -1,10 +1,9 @@
 import React from 'react'
 import Button from '../../general/Button'
 import Avatar1 from '../../../assets/images/avatars/avatar1.jpg'
-import Avatar2 from '../../../assets/images/avatars/avatar2.png'
 
 
-function PendingFriendList({avatar, name, lastMessage, time, unreadMes, handleClick, active}) {
+function PendingFriendList({avatar, name, time, handleClick, active}) {
     let date = new Date(time).toLocaleDateString()
   return (
     <div className={`px-4 w-full flex items-center gap-2 dark:hover:bg-slate-900 hover:bg-slate-200 cursor-pointer ${active ? 'bg-slate-200 dark:bg-slate-900':''}`} onClick={handleClick}>
@@ -24,17 +23,9 @@ function PendingFriendList({avatar, name, lastMessage, time, unreadMes, handleCl
                     {date}
                 </span>
             </div>
-            <div className='flex items-center gap-2'>
-                <Button 
-                    name='Accept' 
-                    onClick={()=>console.log('working')} 
-                    className='px-1 py-1 text-[10px] md:text-[10px]'
-                />
-                <Button 
-                    name='Cancel' 
-                    onClick={()=>console.log('working')} 
-                    className='px-1 py-1 text-[10px] md:text-[10px]'
-                />
+            <div className='flex items-center justify-end gap-2'>
+                <button name='accept' className='px-1 py-[1px] text-[10px] bg-green-700 text-white hover:bg-green-500 rounded-full transition-all duration-500'>Accept</button>
+                <button name='cancel' className='px-1 py-[1px] text-[10px] bg-[#ff6610] text-white hover:bg-[#ffb285] rounded-full transition-all duration-500'>Cancel</button>
             </div>
         </div>
     </div>

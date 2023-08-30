@@ -13,7 +13,6 @@ import LoadingIndicator from "../general/LoadingIndicator";
 
 import AllFriendList from "../../backend/AllFriendList";
 import { chat } from "../../backend/AllFriendList";
-import { Link } from "react-router-dom";
 
 function DashboardHome() {
   const messageBoxSection = useRef();
@@ -183,7 +182,6 @@ function DashboardHome() {
               <div className="flex justify-center items-center gap-2">
                 <i className="fa-solid fa-arrow-left text-4xl"></i>
                 <p className="text-3xl tect-slate-700">Select a friend</p>
-                <Link to='/auth/login'>Login</Link>
               </div>
             </div>
           )}

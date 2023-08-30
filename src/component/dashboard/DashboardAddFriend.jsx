@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import DashboardLayout from "./DashboardLayout";
 import AsideComponent from "../general/AsideComponent";
 import MainComponent from "../general/MainComponent";
 
 import AsideHeader from "./asideContent/AsideHeader";
-import MainHeader from "./mainContent/MainHeader";
 
 import AsideSearchFriends from "./asideContent/AsideSearchFriends";
 import PendingFriendList from "./asideContent/PendingFriendList";
@@ -12,10 +12,12 @@ import SearchIcon from "../../assets/images/icons/search.svg";
 import LoadingIndicator from "../general/LoadingIndicator";
 
 import AllFriendList from "../../backend/AllFriendList";
-import { chat } from "../../backend/AllFriendList";
+import Button from "../general/Button";
+import Input from "../general/Input";
 
 function DashboardAddFriend() {
-  const messageBoxSection = useRef();
+  const navigate = useNavigate()
+  const [requestStatus, setRequestStatus] = useState({loading: false, status:null, messasge: ''})
 
   const [friends, setFriends] = useState({ data: [] });
   const [filteredfriends, setFilteredFriends] = useState({
@@ -23,14 +25,7 @@ function DashboardAddFriend() {
     data: [],
   }); // HOLDS ALL USER FRIEND's LIST
 
-  const [filteredChats, setFilteredChats] = useState({
-    loading: true,
-    data: [],
-  }); // HOLDS SELECTED FRIENDS CHATS
-
   const [activeUser, setActiveUser] = useState(null);
-
-  const [messageToSend, setMessageToSend] = useState("");
 
   // FUNCTION TO FILTER FRIENDS LIST
   const filterFriend = (filterWord) => {
@@ -48,25 +43,30 @@ function DashboardAddFriend() {
     setActiveUser(user);
   };
 
-  // FUNCTION TO SEND MESSAGE (TEXT MESSAGE)
-  const sendTextMessage = (e) => {
-    console.log(e.target.name);
-    if (messageToSend == "") return;
-    if (e.keyCode == 13 || e.target.name == "sendmessage") {
-      setFilteredChats((prev) => ({
-        ...prev,
-        data: [
-          ...prev.data,
-          {
-            id: Math.random() / Math.random(),
-            message: messageToSend,
-            sender: 1,
-          },
-        ],
-      }));
-      setMessageToSend("");
+  let [userNumber, setUserNumber] = useState({number: ''})
+
+    const handleChange = ({target:{name, value}}) => {
+        setUserNumber(prev => ({...prev, [name]:value}))
     }
-  };
+
+    const handleSendRequest = () => { // FUNCTION TO SEND FRINED REQUEST
+        console.log('working')
+        setRequestStatus(prev => ({...prev, loading: true}))
+        setTimeout(()=>{
+            setFilteredFriends(prev => ({...prev,
+                data: [...prev.data, {
+                    name: 'James Mark',
+                    lastMessage: 'testing the chat app',
+                    unreadMes: [1,2,3],
+                    about: 'Opps',
+                    image: '1',
+                    id: Math.random()
+                }]
+            }))
+            setRequestStatus(prev => ({...prev, loading: false}))
+        }, 3000)
+        // navigate('/')
+    }
 
   // CALL API TO POPULATE FRIEND LIST
   useEffect(() => {
@@ -75,18 +75,6 @@ function DashboardAddFriend() {
       setFilteredFriends({ loading: false, data: AllFriendList });
     }, 1000);
   }, []);
-
-  // CALL API TO POPULATE CHAT
-  useEffect(() => {
-    setTimeout(() => {
-      // setFriends({data:AllFriendList})
-      setFilteredChats({ loading: false, data: chat });
-    }, 1000);
-  }, [activeUser]);
-
-  useEffect(()=>{  // FUNCTION TO MAKE THE CHAT SECTION ALWAYS SCROLLS TO BUTTON OF THE CHAT BOX SO USER CAN SEE LAST MESSAGE
-    messageBoxSection?.current?.scrollTo({top:messageBoxSection.current.scrollHeight, behavior: 'smooth'})
-  },[filteredChats])
 
   return (
     <DashboardLayout>
@@ -110,9 +98,7 @@ function DashboardAddFriend() {
                   key={friend.id}
                   avatar={friend.image}
                   name={friend.name}
-                  lastMessage={friend.lastMessage}
                   time={new Date()}
-                  unreadMes={friend.unreadMes}
                   handleClick={() => handleClick(friend)}
                   active={activeUser?.id == friend.id ? true : false}
                 />
@@ -126,10 +112,23 @@ function DashboardAddFriend() {
       <div className="hidden md:block md:w-full">
         <MainComponent className={"flex flex-col"}>
             <div className="pb-2 px-4 md:px-8 flex-grow flex flex-col justify-center items-center">
-              <div className="flex justify-center items-center gap-2">
-                <i className="fa-solid fa-arrow-left text-4xl"></i>
-                <p className="text-3xl tect-slate-700">Send friend request</p>
-              </div>
+                <div className='p-3 w-full min-w-[400px] rounded-md flex flex-col justify-center'>
+                    <div className='w-[70%] min-w-[350px] mx-auto'>
+                        <div className='w-full'>
+                            <Input type='text' name='number' handleChange={handleChange} label={`Enter Friend's Number`} value={userNumber.number} />
+                        </div>
+                        <div className='my-1 text-black dark:text-white flex justify-end items-center'>
+                            <p className='text-[12px]'> <Link to='/'>Back to Home</Link></p>
+                        </div>
+                        <div className='w-full text-center'>
+                            {requestStatus.loading ?
+                            <LoadingIndicator text='Loading' />
+                            :
+                            <Button name='Send Friend Request' onClick={handleSendRequest} />
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </MainComponent>
       </div>
