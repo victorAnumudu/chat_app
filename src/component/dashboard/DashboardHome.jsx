@@ -17,6 +17,9 @@ import { chat } from "../../backend/AllFriendList";
 function DashboardHome() {
   const messageBoxSection = useRef();
 
+  const [section, setSection] = useState('aside')
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+
   const [friends, setFriends] = useState({ data: [] });
   const [filteredfriends, setFilteredFriends] = useState({
     loading: true,
@@ -43,9 +46,24 @@ function DashboardHome() {
     }, 200);
   };
 
+  //FUNCTION TO OPEN MAIN/ASIDE SECTION ON MOBILE VIEW
+  const toggleSection = () => {
+    const windowWidth = window.innerWidth
+    if(windowWidth <= 767){
+      setSection(prev => {
+        if(prev == 'aside'){
+          return 'main'
+        }else{
+          return 'aside'
+        }
+      })
+    }
+  }
+
   // FUNCTION TO MAKE SELECTED FRIEND ACTIVE
   const handleClick = (user) => {
     setActiveUser(user);
+    toggleSection()
   };
 
   // FUNCTION TO SEND MESSAGE (TEXT MESSAGE)
@@ -88,9 +106,18 @@ function DashboardHome() {
     messageBoxSection?.current?.scrollTo({top:messageBoxSection.current.scrollHeight, behavior: 'smooth'})
   },[filteredChats])
 
+  useEffect(()=>{
+   const resize =  window.addEventListener('resize', ()=>{
+      setWindowWidth(window.innerWidth)
+    })
+    return ()=>{
+      window.removeEventListener('resize', resize)
+    }
+  },[])
+
   return (
     <DashboardLayout>
-      <div className="w-full md:block md:w-[500px] md:border-r-4">
+      <div className={`${section=='aside' && windowWidth<=767 ?'w-full':section=='main' && windowWidth<=767?'hidden':'w-full md:w-[500px]'} md:border-r-4`}>
         <AsideComponent className={"flex flex-col"}>
           <AsideHeader />
           <div className="mt-4 mb-2 px-4 md:px-8">
@@ -123,11 +150,11 @@ function DashboardHome() {
           </div>
         </AsideComponent>
       </div>
-      <div className="hidden md:block md:w-full">
+      <div className={`${section=='main' && windowWidth<=767 ? 'w-full':section=='aside' && windowWidth<=767? 'hidden':'md:block w-full'}`}>
         <MainComponent className={"flex flex-col"}>
           {activeUser ? (
             <>
-              <MainHeader user={activeUser} />
+              <MainHeader user={activeUser} toggleSection={toggleSection} />
               <div
                 ref={messageBoxSection}
                 className="flex-grow flex flex-col overflow-y-auto scrollbar"
