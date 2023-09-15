@@ -1,5 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+
+import ProtectedRoute from "./middleware/ProtectedRoute";
+
 import DashboardHomePage from "./pages/DashboardHomePage";
 import DashboardAddFriendPage from "./pages/DashboardAddFriendPage";
 import Auth from "./pages/Auth";
@@ -10,8 +13,10 @@ import ErrorPage from "./pages/ErrorPage";
 function PageRouters() {
   return (
     <Routes>
-      <Route path="/" element={<DashboardHomePage />} />
-      <Route path="/addfriend" element={<DashboardAddFriendPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<DashboardHomePage />} />
+        <Route path="/addfriend" element={<DashboardAddFriendPage />} />
+      </Route>
       <Route path="/auth/*" element={<Auth />} />
       {/* <Route path='/auth' element={<Auth />}>
             <Route path='' element={<Register />} />

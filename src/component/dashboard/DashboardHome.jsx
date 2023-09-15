@@ -1,13 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import DashboardLayout from "./DashboardLayout";
+
+import AsideContainer from "./asideContent/AsideContainer";
 import AsideComponent from "../general/AsideComponent";
-import MainComponent from "../general/MainComponent";
-
 import AsideHeader from "./asideContent/AsideHeader";
-import MainHeader from "./mainContent/MainHeader";
-
 import AsideSearchFriends from "./asideContent/AsideSearchFriends";
 import FriendList from "./asideContent/FriendList";
+
+import MainContainer from "./mainContent/MainContainer";
+import MainComponent from "../general/MainComponent";
+import MainHeader from "./mainContent/MainHeader";
+
 import SearchIcon from "../../assets/images/icons/search.svg";
 import LoadingIndicator from "../general/LoadingIndicator";
 
@@ -17,7 +21,7 @@ import { chat } from "../../backend/AllFriendList";
 function DashboardHome() {
   const messageBoxSection = useRef();
 
-  const [section, setSection] = useState('aside')
+  const [section, setSection] = useState('aside') // STATE FOR SECTION SWITCH ON MOBILE VIEW
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
   const [friends, setFriends] = useState({ data: [] });
@@ -48,7 +52,7 @@ function DashboardHome() {
 
   //FUNCTION TO OPEN MAIN/ASIDE SECTION ON MOBILE VIEW
   const toggleSection = () => {
-    const windowWidth = window.innerWidth
+    // const windowWidth = window.innerWidth
     if(windowWidth <= 767){
       setSection(prev => {
         if(prev == 'aside'){
@@ -106,7 +110,7 @@ function DashboardHome() {
     messageBoxSection?.current?.scrollTo({top:messageBoxSection.current.scrollHeight, behavior: 'smooth'})
   },[filteredChats])
 
-  useEffect(()=>{
+  useEffect(()=>{ // ADDING ON RESIZE EVENT LISTENER AND SETTING THE WINDOWWIDTH ON BROWSER RESIZE
    const resize =  window.addEventListener('resize', ()=>{
       setWindowWidth(window.innerWidth)
     })
@@ -117,10 +121,10 @@ function DashboardHome() {
 
   return (
     <DashboardLayout>
-      <div className={`${section=='aside' && windowWidth<=767 ?'w-full':section=='main' && windowWidth<=767?'hidden':'w-full md:w-[500px]'} md:border-r-4`}>
+      <AsideContainer section={section} windowWidth={windowWidth}>
         <AsideComponent className={"flex flex-col"}>
           <AsideHeader />
-          <div className="mt-4 mb-2 px-4 md:px-8">
+          <div className="mt-2 mb-2 px-4 md:px-8">
             <AsideSearchFriends
               onChange={filterFriend}
               type="text"
@@ -149,8 +153,9 @@ function DashboardHome() {
             )}
           </div>
         </AsideComponent>
-      </div>
-      <div className={`${section=='main' && windowWidth<=767 ? 'w-full':section=='aside' && windowWidth<=767? 'hidden':'md:block w-full'}`}>
+      </AsideContainer>
+
+      <MainContainer section={section} windowWidth={windowWidth}>
         <MainComponent className={"flex flex-col"}>
           {activeUser ? (
             <>
@@ -199,7 +204,6 @@ function DashboardHome() {
                   onClick={sendTextMessage}
                   name="sendmessage"
                 >
-                  {/* <i className="fa-solid fa-play text-2xl pointer-events-none"></i> */}
                   <i className="fa-solid fa-location-arrow text-2xl pointer-events-none"></i>
                 </button>
               </div>
@@ -213,7 +217,7 @@ function DashboardHome() {
             </div>
           )}
         </MainComponent>
-      </div>
+      </MainContainer>
     </DashboardLayout>
   );
 }

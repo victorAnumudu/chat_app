@@ -2,9 +2,17 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import Input from '../general/Input';
 import Button from '../general/Button';
+import LoadingIndicator from '../general/LoadingIndicator';
+
+import { updateUserDetails } from '../../store/UserDetails';
+import { useDispatch } from 'react-redux';
 
 function Login() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    let [requestStatus, setRequestStatus] = useState({loading: false, status: false, message:''})
+
     let [loginDetails, setLoginDetails] = useState({
         number: '',
         password: ''
@@ -15,8 +23,19 @@ function Login() {
     }
 
     const handleLogin = () => {
-        console.log('working',loginDetails)
-        navigate('/')
+        setRequestStatus({loading: false, status: false, message:''})
+        let {number, password} = loginDetails
+        if(!number || !password){
+            setRequestStatus({loading: false, status: false, message:'Please Enter Number and passowrd'})
+            return setTimeout(()=>{
+                setRequestStatus({loading: false, status: false, message:''})
+            },4000)
+        }
+        setRequestStatus({loading: true, status: false, message:''})
+        setTimeout(()=>{
+            dispatch(updateUserDetails({name: 'john'}))
+            navigate('/')
+        },4000)
     }
     
     return(
@@ -33,8 +52,22 @@ function Login() {
                     <p className='text-[12px]'> <Link to='../forget_password'>Forget Password?</Link></p>
                 </div>
                 <div className='w-full'>
+                    {requestStatus.loading ?
+                    <div className='w-full text-center text-xl px-4 py-2 md:text-xl bg-[#ff6610] rounded-full'>
+                        <LoadingIndicator text='loading' />
+                    </div>
+                    :
                     <Button name='Login' onClick={handleLogin} />
+                    }
                 </div>
+
+                {/* ERROR/SUCESS DISPLAY */}
+                {requestStatus.message && 
+                <div className='w-full'>
+                    <p className={`${requestStatus.status?'text-green-500':'text-red-500'}`}>{requestStatus.message}</p>
+                </div>
+                }
+                
             </div>
         </div>
     )

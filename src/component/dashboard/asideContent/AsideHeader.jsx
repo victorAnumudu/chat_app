@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../Header";
 import Logo from "../../../assets/images/logo.svg";
 import DarkLogo from "../../../assets//images/dark_logo.svg";
 import Avatar from "../../../assets/images//avatars/avatar1.jpg";
 
 import { themeContext } from "../../../context/DarkMode";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+import { updateUserDetails } from "../../../store/UserDetails";
+import { useDispatch } from "react-redux";
 
 function AsideHeader() {
+  let {pathname} = useLocation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  
   let { theme, handleTheme } = themeContext();
+
+  let [menuIsOpen, setMenuIsOpen] = useState(false)
+
+  const handleOpenMenu = () => {
+    setMenuIsOpen(prev => !prev)
+  }
+
+  const logout = () => {
+    dispatch(updateUserDetails({}))
+    navigate('/auth/login', {replace:true})
+  }
 
   return (
     <Header>
@@ -30,11 +49,45 @@ function AsideHeader() {
           </div>
         </div>
         {/* dark mode toggle */}
-        <div
+        {/* <div
           className="cursor-pointer text-slate-900 dark:text-slate-100"
           onClick={handleTheme}
         >
           <i className="fa-solid fa-moon text-3xl"></i>
+        </div> */}
+
+        {/* MENU BAR*/}
+        <div
+          className="relative text-slate-900 dark:text-slate-100"
+        >
+          <i onClick={handleOpenMenu} className="fa-solid fa-ellipsis-vertical text-3xl cursor-pointer p-4"></i>
+          <div className={`${menuIsOpen ? 'right-0':'-right-[300px]'} absolute z-auto transition-all duration-300 top-full w-[200px] bg-white dark:bg-slate-900 text-slate-900 dark:text-white`}>
+            <ul>
+              <li className="">
+                <Link 
+                  className={`w-full flex gap-2 items-center p-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all ${pathname=='/'?'border-b-4 border-slate-700':''}`} 
+                  to='/'
+                >
+                  <span><i className="fa-solid fa-house"></i></span>Home
+                </Link>
+              </li>
+              <li className="">
+                <Link 
+                  className={`w-full flex gap-2 items-center p-2 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all ${pathname=='/addfriend'?'border-b-4 border-slate-700':''}`} 
+                  to='/addfriend'
+                >
+                  <span><i className="fa-solid fa-user-group"></i></span>Add friend
+                </Link>
+              </li>
+              {/* <li></li> */}
+            </ul>
+            <button className="w-full flex gap-2 items-center p-2 mt-10 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all" onClick={handleTheme}>
+              <span><i className="fa-solid fa-moon"></i></span> Switch Mode
+            </button>
+            <button className="w-full flex gap-2 items-center p-2 bg-red-500" onClick={logout}>
+              <span><i className="fa-solid fa-right-from-bracket"></i></span> Logout
+            </button>
+          </div>
         </div>
       </div>
     </Header>
