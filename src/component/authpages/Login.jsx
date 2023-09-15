@@ -42,10 +42,10 @@ function Login() {
         <div className='p-3 w-full rounded-md flex flex-col justify-center'>
             <div className='w-[90%] lg:w-[70%] mx-auto'>
                 <div className='w-full'>
-                    <Input type='text' name='number' handleChange={handleChange} label='Enter Your Phone Number' />
+                    <Input type='text' name='number' value={loginDetails.number} handleChange={handleChange} label='Enter Your Phone Number' />
                 </div>
                 <div className='w-full mt-4'>
-                    <Input type='text' name='password' handleChange={handleChange} label='Enter Your Password' />
+                    <Input type='text' name='password' value={loginDetails.password} handleChange={handleChange} label='Enter Your Password' />
                 </div>
                 <div className='my-1 text-black dark:text-white flex justify-between items-center'>
                     <p className='text-[12px]'>Don't Have account? <Link className='text-green-700' to='../register'>Register</Link></p>
