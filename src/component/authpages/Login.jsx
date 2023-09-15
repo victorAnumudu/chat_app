@@ -14,8 +14,8 @@ function Login() {
     let [requestStatus, setRequestStatus] = useState({loading: false, status: false, message:''})
 
     let [loginDetails, setLoginDetails] = useState({
-        number: '',
-        password: ''
+        number: '0000',
+        password: 'text'
     })
 
     const handleChange = ({target:{name, value}}) => {
@@ -26,7 +26,7 @@ function Login() {
         setRequestStatus({loading: false, status: false, message:''})
         let {number, password} = loginDetails
         if(!number || !password || number != '0000' || password != 'text'){
-            setRequestStatus({loading: false, status: false, message:`Please '0000' as both phone number and 'text' as password`})
+            setRequestStatus({loading: false, status: false, message:`Please use '0000' phone number and 'text' as password`})
             return setTimeout(()=>{
                 setRequestStatus({loading: false, status: false, message:''})
             },4000)
