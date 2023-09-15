@@ -25,8 +25,8 @@ function Login() {
     const handleLogin = () => {
         setRequestStatus({loading: false, status: false, message:''})
         let {number, password} = loginDetails
-        if(!number || !password){
-            setRequestStatus({loading: false, status: false, message:'Please Enter Number and passowrd'})
+        if(!number || !password || number != '0000' || password != 'text'){
+            setRequestStatus({loading: false, status: false, message:`Please '0000' as both phone number and 'text' as password`})
             return setTimeout(()=>{
                 setRequestStatus({loading: false, status: false, message:''})
             },4000)
