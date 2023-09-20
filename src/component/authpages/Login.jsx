@@ -4,18 +4,21 @@ import Input from '../general/Input';
 import Button from '../general/Button';
 import LoadingIndicator from '../general/LoadingIndicator';
 
+import Services from '../../services/Services';
+
 import { updateUserDetails } from '../../store/UserDetails';
 import { useDispatch } from 'react-redux';
 
 function Login() {
+    const api = new Services()
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    let [requestStatus, setRequestStatus] = useState({loading: false, status: false, message:''})
+    let [requestStatus, setRequestStatus] = useState({loading: 0, status: 0, message:''})
 
     let [loginDetails, setLoginDetails] = useState({
-        number: '0000',
-        password: 'text'
+        number: '',
+        password: ''
     })
 
     const handleChange = ({target:{name, value}}) => {
@@ -23,19 +26,42 @@ function Login() {
     }
 
     const handleLogin = () => {
-        setRequestStatus({loading: false, status: false, message:''})
+        setRequestStatus({loading: 0, status: 0, message:''})
         let {number, password} = loginDetails
-        if(!number || !password || number != '0000' || password != 'text'){
-            setRequestStatus({loading: false, status: false, message:`Please use '0000' phone number and 'text' as password`})
-            return setTimeout(()=>{
-                setRequestStatus({loading: false, status: false, message:''})
-            },4000)
+        let reqData = {
+            phone_number: number, password
         }
-        setRequestStatus({loading: true, status: false, message:''})
-        setTimeout(()=>{
-            dispatch(updateUserDetails({name: 'john'}))
-            navigate('/')
-        },4000)
+        if(!number || !password ){
+            setRequestStatus({loading: 0, status: 0, message:`Please fill all fields`})
+            return setTimeout(()=>{
+                setRequestStatus({loading: 0, status: 0, message:''})
+            },3000)
+        }
+
+        // Start loading
+        setRequestStatus({loading: 1, status: 0, message:''})
+        api.loginUser(reqData).then(response => {
+            if(response.data.status !=1){
+                return setRequestStatus({loading: 0, status: 0, message:response.data.message})
+            }
+            setRequestStatus({loading: 0, status: 1, message:response.data.message})
+            let {result_data} = response.data
+            dispatch(updateUserDetails({...result_data}))
+            navigate('/',{replace:true})
+            localStorage.setItem('id',result_data._id)
+            localStorage.setItem('token',result_data.token)
+        }).catch(error=>{
+            setRequestStatus({loading: 0, status: 0, message:error.type != undefined? error.message : 'Opps! something happened. Try again'})
+        }).finally(()=>{
+            setTimeout(()=>{
+                setRequestStatus({loading: 0, status: 0, message:''})
+            },3000)
+        })
+        // setRequestStatus({loading: true, status: false, message:''})
+        // setTimeout(()=>{
+        //     dispatch(updateUserDetails({name: 'john'}))
+        //     navigate('/')
+        // },3000)
     }
     
     return(
@@ -45,7 +71,7 @@ function Login() {
                     <Input type='text' name='number' value={loginDetails.number} handleChange={handleChange} label='Enter Your Phone Number' />
                 </div>
                 <div className='w-full mt-4'>
-                    <Input type='text' name='password' value={loginDetails.password} handleChange={handleChange} label='Enter Your Password' />
+                    <Input type='password' name='password' value={loginDetails.password} handleChange={handleChange} label='Enter Your Password' />
                 </div>
                 <div className='my-1 text-black dark:text-white flex justify-between items-center'>
                     <p className='text-[12px]'>Don't Have account? <Link className='text-green-700' to='../register'>Register</Link></p>

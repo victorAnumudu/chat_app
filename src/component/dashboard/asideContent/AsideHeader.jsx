@@ -9,6 +9,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { updateUserDetails } from "../../../store/UserDetails";
 import { useDispatch } from "react-redux";
+import Modal from "../../general/Modal";
 
 function AsideHeader() {
   let {pathname} = useLocation()
@@ -17,7 +18,9 @@ function AsideHeader() {
   
   let { theme, handleTheme } = themeContext();
 
-  let [menuIsOpen, setMenuIsOpen] = useState(false)
+  let [menuIsOpen, setMenuIsOpen] = useState(false) // FOR HANDLING ASIDE MENU SHOW/HIDE
+
+  let [logoutModal, setLogoutModal] = useState({show:false})
 
   const handleOpenMenu = () => {
     setMenuIsOpen(prev => !prev)
@@ -25,7 +28,15 @@ function AsideHeader() {
 
   const logout = () => {
     dispatch(updateUserDetails({}))
+    localStorage.removeItem('id')
+    localStorage.removeItem('token')
     navigate('/auth/login', {replace:true})
+  }
+
+  const handleLogoutModal = (e) => {
+    e.stopPropagation()
+    setMenuIsOpen(false)
+    setLogoutModal(prev => ({...prev, show:!prev.show}))
   }
 
   return (
@@ -84,12 +95,22 @@ function AsideHeader() {
             <button className="w-full flex gap-2 items-center p-2 mt-10 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all" onClick={handleTheme}>
               <span><i className="fa-solid fa-moon"></i></span> Switch Mode
             </button>
-            <button className="w-full flex gap-2 items-center p-2 bg-red-500" onClick={logout}>
+            <button className="w-full flex gap-2 items-center p-2 bg-red-500" onClick={handleLogoutModal}>
               <span><i className="fa-solid fa-right-from-bracket"></i></span> Logout
             </button>
           </div>
         </div>
       </div>
+
+      {/* CONFIRM LOGOUT MODAL */}
+      {logoutModal.show &&
+      <Modal handleLogoutModal={handleLogoutModal}>
+        <div className='p-2 w-[500px] h-[500px] flex flex-col justify-center items-center'>
+            <button className="px-2 py-1 rounded-lg shadow-md" onClick={logout}>Logout</button>
+            <button className="px-2 py-1 rounded-lg shadow-md" onClick={handleLogoutModal}>Cancel</button>
+        </div>
+      </Modal>
+      }
     </Header>
   );
 }

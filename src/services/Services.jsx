@@ -1,21 +1,45 @@
 import Axios from "axios";
 
-class usersService {
+class Services {
   constructor() {
     console.log("WRB Service Entry");
   }
 
   
-  // FUNCTION TO ASSIGN TASK TO FAMILY MEMBER
-  assignFamilyTask(reqData) {
+  // // FUNCTION TO ASSIGN TASK TO FAMILY MEMBER
+  // assignFamilyTask(reqData) {
+  //   var postData = {
+  //     uid: localStorage.getItem("uid"),
+  //     member_id: localStorage.getItem("member_id"),
+  //     token: localStorage.getItem("session_token"),
+  //     action: 13025,
+  //     ...reqData,
+  //   };
+  //   return this.postAuxEnd("/assigntask", postData);
+  // }
+
+   // FUNCTION TO LOGIN USER
+   loginUser(reqData) {
     var postData = {
-      uid: localStorage.getItem("uid"),
-      member_id: localStorage.getItem("member_id"),
-      sessionid: localStorage.getItem("session_token"),
-      action: 13025,
       ...reqData,
     };
-    return this.postAuxEnd("/assigntask", postData);
+    return this.postAuxEnd("/login", postData);
+  }
+
+   // FUNCTION TO REGISTER USER
+   registerUser(reqData) {
+    var postData = {
+      ...reqData,
+    };
+    return this.postAuxEnd("/register", postData);
+  }
+
+   // FUNCTION TO GET USER PROFILE
+   getUserProfile() {
+    var postData = {
+      token: localStorage.getItem('token')
+    };
+    return this.postAuxEnd("/profile", postData);
   }
   //----------------------------------------  -----
   //----------------------------------------  -----
@@ -31,14 +55,14 @@ class usersService {
         Authorization: `Basic ${session_token}`,
       },
     };
-    const endPoint = process.env.REACT_APP_BACKEND_ENDPOINT + uri;
+    const endPoint = import.meta.env.VITE_BACKEND_ENDPOINT + uri;
     return Axios.get(endPoint, {
       params: {
         reqData,
       },
     })
       .then((response) => {
-        console.log("~~~~~~~ Toks2 GET ~~~~~~~~");
+        console.log("~~~~~~~ API CALL SUCCESSFUL ~~~~~~~~");
         return response;
       })
       .catch((error) => {
@@ -56,7 +80,7 @@ class usersService {
   }
 
   postAuxEnd(uri, reqData) {
-    const endPoint = process.env.REACT_APP_BACKEND_ENDPOINT + uri;
+    const endPoint = import.meta.env.VITE_BACKEND_ENDPOINT + uri;
     const session_token = localStorage.getItem("session_token");
     // session_token = session_token !=null ?session_token : '';
     //   'Authorization': `Basic ${(session_token !=null) ?session_token : ''}`,
@@ -77,41 +101,42 @@ class usersService {
     return Axios.post(endPoint, reqData)
       .then((response) => {
         console.log(response);
-        // res = response;
-        console.log("~~~~~~~ Toks2 POST ~~~~~~~~");
+        console.log("~~~~~~~ API CALL SUCCESSFUL ~~~~~~~~");
         return response;
       })
       .catch((error) => {
-        if (error.response) {
+        // if (error.response) {
           //response status is an error code
           console.log(
             "ERROR-------------------------------------------------------"
           );
-          console.log(error.response.status);
+          console.log('MY ERROR',error.response);
           console.log(
             "ERROR-------------------------------------------------------"
           );
-        } else if (error.request) {
-          //response not received though the request was sent
-          console.log(
-            "ERROR2-------------------------------------------------------"
-          );
-          console.log(error?.request);
-          console.log(
-            "ERROR2-------------------------------------------------------"
-          );
-        } else {
-          //an error occurred when setting up the request
-          console.log(
-            "ERROR3-------------------------------------------------------"
-          );
-          console.log(error);
-          console.log(
-            "ERROR3-------------------------------------------------------"
-          );
-        }
+          return error.response;
+        // } else if (error.request) {
+        //   //response not received though the request was sent
+        //   console.log(
+        //     "ERROR2-------------------------------------------------------"
+        //   );
+        //   console.log(error?.request);
+        //   console.log(
+        //     "ERROR2-------------------------------------------------------"
+        //   );
+        //   return error.request;
+        // } else {
+        //   //an error occurred when setting up the request
+        //   console.log(
+        //     "ERROR3-------------------------------------------------------"
+        //   );
+        //   console.log(error);
+        //   console.log(
+        //     "ERROR3-------------------------------------------------------"
+        //   );
+        // }
       });
   }
 }
 
-export default usersService;
+export default Services;

@@ -55,3 +55,16 @@
     @apply bg-slate-600
   }
 }
+
+@layer utilities {
+  @keyframes zoom {
+    0%{transform: scale(1);}
+   50%{transform: scale(1.05);}
+    100%{transform: scale(1);}
+  }
+  .modal-zoom{
+    animation-name: zoom;
+    animation-timing-function: linear;
+    animation-duration: .2s;
+  }
+}
