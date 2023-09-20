@@ -105,9 +105,26 @@ function AsideHeader() {
       {/* CONFIRM LOGOUT MODAL */}
       {logoutModal.show &&
       <Modal handleLogoutModal={handleLogoutModal}>
-        <div className='p-2 w-[500px] h-[500px] flex flex-col justify-center items-center'>
-            <button className="px-2 py-1 rounded-lg shadow-md" onClick={logout}>Logout</button>
-            <button className="px-2 py-1 rounded-lg shadow-md" onClick={handleLogoutModal}>Cancel</button>
+        <div className='p-4 w-[300px] md:w-[400px]'>
+          {/* modal head */}
+          <div className="">
+            <div className="py-3 flex justify-between items-center dark:text-slate-700">
+              <h1 className="text-2xl">Confirm Logout</h1>
+              <span className="cursor-pointer" onClick={handleLogoutModal}><i className="fa-regular fa-circle-xmark text-2xl"></i></span>
+            </div>
+            <div className="w-full h-1 bg-slate-500"></div>
+          </div>
+
+          {/* modal body */}
+          <div className="py-3">
+            <div className="flex justify-center items-center">
+              <i class="fa-solid fa-question text-[150px] text-sky-400"></i>
+            </div>
+            <div className="flex justify-center items-center gap-4">
+              <button className="text-2xl border border-red-300 font-semibold dark:text-slate-700 px-2 py-1 rounded-lg shadow-md" onClick={handleLogoutModal}>Cancel</button>
+              <button className="text-2xl bg-red-500 text-white font-semibold px-2 py-1 rounded-lg shadow-md" onClick={logout}>Logout</button>
+            </div>
+          </div>
         </div>
       </Modal>
       }
