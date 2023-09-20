@@ -46,6 +46,14 @@ class Services {
   // Unified call below
   //----------------------------------------  -----
   //----------------------------------------  -----
+  config(){
+    let apiUrl =
+      process.env.NODE_ENV == "development"
+        ? "http://localhost:10000/api"
+        : "https://swift-chat-58zz.onrender.com/api";
+    return apiUrl;
+  };
+
   getAuxEnd(uri, reqData) {
     const session_token = localStorage.getItem("session_token");
     let axiosConfig = {
@@ -55,7 +63,7 @@ class Services {
         Authorization: `Basic ${session_token}`,
       },
     };
-    const endPoint = import.meta.env.VITE_BACKEND_ENDPOINT + uri;
+    const endPoint = this.config() + uri;
     return Axios.get(endPoint, {
       params: {
         reqData,
@@ -80,7 +88,7 @@ class Services {
   }
 
   postAuxEnd(uri, reqData) {
-    const endPoint = import.meta.env.VITE_BACKEND_ENDPOINT + uri;
+    const endPoint = this.config() + uri;
     const session_token = localStorage.getItem("session_token");
     // session_token = session_token !=null ?session_token : '';
     //   'Authorization': `Basic ${(session_token !=null) ?session_token : ''}`,
