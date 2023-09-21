@@ -1,4 +1,5 @@
 import Axios from "axios";
+import Cookies from "js-cookie";
 
 class Services {
   constructor() {
@@ -37,7 +38,7 @@ class Services {
    // FUNCTION TO GET USER PROFILE
    getUserProfile() {
     var postData = {
-      token: localStorage.getItem('token')
+      token: Cookies.get('token')
     };
     return this.postAuxEnd("/profile", postData);
   }
@@ -46,7 +47,7 @@ class Services {
   // Unified call below
   //----------------------------------------  -----
   //----------------------------------------  -----
-  config(){
+  apiConfig(){
     let apiUrl =
       process.env.NODE_ENV == "development"
         ? "http://localhost:10000/api"
@@ -63,7 +64,7 @@ class Services {
         Authorization: `Basic ${session_token}`,
       },
     };
-    const endPoint = this.config() + uri;
+    const endPoint = this.apiConfig() + uri;
     return Axios.get(endPoint, {
       params: {
         reqData,
@@ -88,7 +89,7 @@ class Services {
   }
 
   postAuxEnd(uri, reqData) {
-    const endPoint = this.config() + uri;
+    const endPoint = this.apiConfig() + uri;
     const session_token = localStorage.getItem("session_token");
     // session_token = session_token !=null ?session_token : '';
     //   'Authorization': `Basic ${(session_token !=null) ?session_token : ''}`,

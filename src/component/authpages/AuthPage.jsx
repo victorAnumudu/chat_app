@@ -4,7 +4,7 @@ import LeftAside from "../general/AsideComponent";
 import MainContent from "../general/MainComponent";
 import AsideBg from "../../assets/images/auth/aside_bg.svg";
 import Logo from "../../assets/images/logo.svg";
-import { Outlet, Routes, Route } from "react-router-dom";
+import { Outlet, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import CompleteRegistration from "./CompleteRegistration";

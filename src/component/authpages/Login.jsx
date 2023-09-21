@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Cookies from 'js-cookie'
 import { Link, useNavigate } from "react-router-dom";
 import Input from '../general/Input';
 import Button from '../general/Button';
@@ -49,7 +50,7 @@ function Login() {
             dispatch(updateUserDetails({...result_data}))
             navigate('/',{replace:true})
             localStorage.setItem('id',result_data._id)
-            localStorage.setItem('token',result_data.token)
+            Cookies.set('token', result_data.token)
         }).catch(error=>{
             setRequestStatus({loading: 0, status: 0, message:error.type != undefined? error.message : 'Opps! something happened. Try again'})
         }).finally(()=>{

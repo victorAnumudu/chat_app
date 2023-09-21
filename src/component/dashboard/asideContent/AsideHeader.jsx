@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Cookies from 'js-cookie'
 import Header from "../Header";
 import Logo from "../../../assets/images/logo.svg";
 import DarkLogo from "../../../assets//images/dark_logo.svg";
@@ -29,7 +30,7 @@ function AsideHeader() {
   const logout = () => {
     dispatch(updateUserDetails({}))
     localStorage.removeItem('id')
-    localStorage.removeItem('token')
+    Cookies.remove('token')
     navigate('/auth/login', {replace:true})
   }
 
@@ -118,7 +119,7 @@ function AsideHeader() {
           {/* modal body */}
           <div className="py-3">
             <div className="flex justify-center items-center">
-              <i class="fa-solid fa-question text-[150px] text-sky-400"></i>
+              <i className="fa-solid fa-question text-[150px] text-sky-400"></i>
             </div>
             <div className="flex justify-center items-center gap-4">
               <button className="text-2xl border border-red-300 font-semibold dark:text-slate-700 px-2 py-1 rounded-lg shadow-md" onClick={handleLogoutModal}>Cancel</button>
