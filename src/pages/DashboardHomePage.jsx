@@ -23,7 +23,7 @@ function DashboardHomePage() {
   }
   
   useEffect(()=>{ // WEB SOCKET CONNECTION
-    const serverLink = process.env.NODE_ENV == "development" ? "ws://localhost:10000": "ws://swift-chat-58zz.onrender.com";
+    const serverLink = process.env.NODE_ENV == "development" ? "ws://localhost:10000": "wss://swift-chat-58zz.onrender.com";
     const ws = new WebSocket(serverLink)
     // const ws = new WebSocket('ws://localhost:10000')
     setWS(ws)
