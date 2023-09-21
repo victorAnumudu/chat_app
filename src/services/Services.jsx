@@ -38,7 +38,7 @@ class Services {
    // FUNCTION TO GET USER PROFILE
    getUserProfile() {
     var postData = {
-      token: Cookies.get('token')
+      token: Cookies.get('_token')
     };
     return this.postAuxEnd("/profile", postData);
   }

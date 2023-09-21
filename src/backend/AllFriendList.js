@@ -31,110 +31,110 @@ const AllFriendList = [
         image: '2',
         id: 4
     },
-    {
-        name: 'Emeka Mike',
-        lastMessage: 'When I get to Aba, I will call you for the money',
-        unreadMes: [1,2],
-        about: 'New Here',
-        image: '1',
-        id: 5
-    },
-    {
-        name: 'Fortune Mmuo',
-        lastMessage: 'Opps, that man na scam',
-        unreadMes: [],
-        about: 'Praise God',
-        image: '',
-        id: 6
-    },
-    {
-        name: 'Gift Money',
-        lastMessage: 'Please do well, to send me those items',
-        unreadMes: [1],
-        about: 'God no go shame us',
-        image: '1',
-        id: 7
-    },
-    {
-        name: 'Henry John',
-        lastMessage: 'testing the chat app',
-        unreadMes: [1,2,3],
-        about: 'Monkeys everywhere',
-        image: '2',
-        id: 8
-    },
-    {
-        name: 'Iyke Mike',
-        lastMessage: 'When I get to Aba, I will call you for the money',
-        unreadMes: [1,2],
-        about: 'Coming back soon',
-        image: '',
-        id: 9
-    },
-    {
-        name: 'Jacab Mmuo',
-        lastMessage: 'Opps, that man na scam',
-        unreadMes: [],
-        about: 'brb...',
-        image: '',
-        id: 10
-    },
-    {
-        name: 'Kate Money',
-        lastMessage: 'Please do well, to send me those items',
-        unreadMes: [1],
-        about: 'In a meeting',
-        image: '',
-        id: 11
-    },
-    {
-        name: 'Linda John',
-        lastMessage: 'testing the chat app',
-        unreadMes: [1,2,3],
-        about: 'Out of reach',
-        image: '1',
-        id: 12
-    },
-    {
-        name: 'Monday Mike',
-        lastMessage: 'When I get to Aba, I will call you for the money',
-        unreadMes: [1,2],
-        about: 'Preach the Gospel',
-        image: '1',
-        id: 13
-    },
-    {
-        name: 'Nnunu Mmuo',
-        lastMessage: 'Opps, that man na scam',
-        unreadMes: [],
-        about: 'Peace of mind',
-        image: '1',
-        id: 14
-    },
-    {
-        name: 'Obi Money',
-        lastMessage: 'Please do well, to send me those items',
-        unreadMes: [1],
-        about: 'United Arab Emirates',
-        image: '1',
-        id: 15
-    },
-    {
-        name: 'Peter John',
-        lastMessage: 'testing the chat app',
-        unreadMes: [1,2,3],
-        about: 'Opps',
-        image: '1',
-        id: 16
-    },
-    {
-        name: 'Paul John',
-        lastMessage: 'testing the chat app',
-        unreadMes: [1,2,3],
-        about: 'Opps',
-        image: '1',
-        id: 17
-    }
+    // {
+    //     name: 'Emeka Mike',
+    //     lastMessage: 'When I get to Aba, I will call you for the money',
+    //     unreadMes: [1,2],
+    //     about: 'New Here',
+    //     image: '1',
+    //     id: 5
+    // },
+    // {
+    //     name: 'Fortune Mmuo',
+    //     lastMessage: 'Opps, that man na scam',
+    //     unreadMes: [],
+    //     about: 'Praise God',
+    //     image: '',
+    //     id: 6
+    // },
+    // {
+    //     name: 'Gift Money',
+    //     lastMessage: 'Please do well, to send me those items',
+    //     unreadMes: [1],
+    //     about: 'God no go shame us',
+    //     image: '1',
+    //     id: 7
+    // },
+    // {
+    //     name: 'Henry John',
+    //     lastMessage: 'testing the chat app',
+    //     unreadMes: [1,2,3],
+    //     about: 'Monkeys everywhere',
+    //     image: '2',
+    //     id: 8
+    // },
+    // {
+    //     name: 'Iyke Mike',
+    //     lastMessage: 'When I get to Aba, I will call you for the money',
+    //     unreadMes: [1,2],
+    //     about: 'Coming back soon',
+    //     image: '',
+    //     id: 9
+    // },
+    // {
+    //     name: 'Jacab Mmuo',
+    //     lastMessage: 'Opps, that man na scam',
+    //     unreadMes: [],
+    //     about: 'brb...',
+    //     image: '',
+    //     id: 10
+    // },
+    // {
+    //     name: 'Kate Money',
+    //     lastMessage: 'Please do well, to send me those items',
+    //     unreadMes: [1],
+    //     about: 'In a meeting',
+    //     image: '',
+    //     id: 11
+    // },
+    // {
+    //     name: 'Linda John',
+    //     lastMessage: 'testing the chat app',
+    //     unreadMes: [1,2,3],
+    //     about: 'Out of reach',
+    //     image: '1',
+    //     id: 12
+    // },
+    // {
+    //     name: 'Monday Mike',
+    //     lastMessage: 'When I get to Aba, I will call you for the money',
+    //     unreadMes: [1,2],
+    //     about: 'Preach the Gospel',
+    //     image: '1',
+    //     id: 13
+    // },
+    // {
+    //     name: 'Nnunu Mmuo',
+    //     lastMessage: 'Opps, that man na scam',
+    //     unreadMes: [],
+    //     about: 'Peace of mind',
+    //     image: '1',
+    //     id: 14
+    // },
+    // {
+    //     name: 'Obi Money',
+    //     lastMessage: 'Please do well, to send me those items',
+    //     unreadMes: [1],
+    //     about: 'United Arab Emirates',
+    //     image: '1',
+    //     id: 15
+    // },
+    // {
+    //     name: 'Peter John',
+    //     lastMessage: 'testing the chat app',
+    //     unreadMes: [1,2,3],
+    //     about: 'Opps',
+    //     image: '1',
+    //     id: 16
+    // },
+    // {
+    //     name: 'Paul John',
+    //     lastMessage: 'testing the chat app',
+    //     unreadMes: [1,2,3],
+    //     about: 'Opps',
+    //     image: '1',
+    //     id: 17
+    // }
 ]
 
 export default AllFriendList

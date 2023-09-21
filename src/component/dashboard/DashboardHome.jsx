@@ -18,7 +18,7 @@ import LoadingIndicator from "../general/LoadingIndicator";
 import AllFriendList from "../../backend/AllFriendList";
 import { chat } from "../../backend/AllFriendList";
 
-function DashboardHome() {
+function DashboardHome({onLineUsers}) {
   const messageBoxSection = useRef();
 
   const [section, setSection] = useState('aside') // STATE FOR SECTION SWITCH ON MOBILE VIEW
@@ -93,11 +93,11 @@ function DashboardHome() {
   // CALL API TO POPULATE FRIEND LIST
   useEffect(() => {
     setTimeout(() => {
-      setFriends({ data: AllFriendList });
-      setFilteredFriends({ loading: false, data: AllFriendList });
+      setFriends({ data: onLineUsers ? [...onLineUsers, ...AllFriendList] : AllFriendList });
+      setFilteredFriends({ loading: false, data: onLineUsers ? [...onLineUsers, ...AllFriendList] : AllFriendList });
     }, 1000);
-  }, []);
-
+  }, [onLineUsers]);
+console.log(friends)
   // CALL API TO POPULATE CHAT
   useEffect(() => {
     setTimeout(() => {
@@ -146,6 +146,7 @@ function DashboardHome() {
                   unreadMes={friend.unreadMes}
                   handleClick={() => handleClick(friend)}
                   active={activeUser?.id == friend.id ? true : false}
+                  online={friend.online ? true: false}
                 />
               ))
             ) : (

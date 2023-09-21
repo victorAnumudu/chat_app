@@ -3,15 +3,14 @@ import Avatar1 from '../../../assets/images/avatars/avatar1.jpg'
 import Avatar2 from '../../../assets/images/avatars/avatar2.png'
 
 
-function FriendList({avatar, name, lastMessage, time, unreadMes, handleClick, active}) {
+function FriendList({avatar, name, lastMessage, time, unreadMes, handleClick, active, online}) {
     let hour = new Date(time).getHours()
     let minute = new Date(time).getMinutes()
-    let ranNum = Math.round(Math.random())
   return (
     <div className={`px-4 w-full flex items-center gap-2 dark:hover:bg-slate-900 hover:bg-slate-200 cursor-pointer ${active ? 'bg-slate-200 dark:bg-slate-900':''}`} onClick={handleClick}>
         <div className='relative'>
             {/* online symbol */}
-            {ranNum == 1 && <div className={`absolute bottom-0 right-0 w-[10px] h-[10px] rounded-full bg-green-500`}></div>}
+            {online && <div className={`absolute bottom-0 right-0 w-[10px] h-[10px] rounded-full bg-green-500`}></div>}
             {avatar ?
             // <img className='min-w-[40px] min-h-[40px] max-w-[40px] max-h-[40px] rounded-full shadow-sm' src={ranNum ? Avatar1 : Avatar2} alt='User Avatar' />
             <img className='min-w-[40px] min-h-[40px] max-w-[40px] max-h-[40px] rounded-full shadow-sm' src={Avatar1} alt='User Avatar' />

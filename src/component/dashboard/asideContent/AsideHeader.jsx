@@ -30,7 +30,7 @@ function AsideHeader() {
   const logout = () => {
     dispatch(updateUserDetails({}))
     localStorage.removeItem('id')
-    Cookies.remove('token')
+    Cookies.remove('_token')
     navigate('/auth/login', {replace:true})
   }
 

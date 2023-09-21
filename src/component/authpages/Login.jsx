@@ -50,7 +50,7 @@ function Login() {
             dispatch(updateUserDetails({...result_data}))
             navigate('/',{replace:true})
             localStorage.setItem('id',result_data._id)
-            Cookies.set('token', result_data.token)
+            Cookies.set('_token', result_data.token)
         }).catch(error=>{
             setRequestStatus({loading: 0, status: 0, message:error.type != undefined? error.message : 'Opps! something happened. Try again'})
         }).finally(()=>{
