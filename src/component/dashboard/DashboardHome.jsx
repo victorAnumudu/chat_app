@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux'
 
 import DashboardLayout from "./DashboardLayout";
 
@@ -18,7 +19,8 @@ import LoadingIndicator from "../general/LoadingIndicator";
 import AllFriendList from "../../backend/AllFriendList";
 import { chat } from "../../backend/AllFriendList";
 
-function DashboardHome({onLineUsers}) {
+function DashboardHome({onLineUsers, sendMessage, addNewMes, setAddNewMes}) {
+  let {userDetails} = useSelector(state => state.userDetails) // LOGGED IN USER INFO
   const messageBoxSection = useRef();
 
   const [section, setSection] = useState('aside') // STATE FOR SECTION SWITCH ON MOBILE VIEW
@@ -75,36 +77,53 @@ function DashboardHome({onLineUsers}) {
     console.log(e.target.name);
     if (messageToSend == "") return;
     if (e.keyCode == 13 || e.target.name == "sendmessage") {
-      setFilteredChats((prev) => ({
-        ...prev,
-        data: [
-          ...prev.data,
-          {
-            id: Math.random() / Math.random(),
-            message: messageToSend,
-            sender: 1,
-          },
-        ],
-      }));
+      let mesDetails = {
+        message: messageToSend,
+        sender: userDetails._id,
+        recipient: activeUser.id,
+        time: ''
+      }
+      // setFilteredChats((prev) => ({
+      //   ...prev,
+      //   data: [
+      //     ...prev.data,
+      //     mesDetails
+      //   ],
+      // }));
       setMessageToSend("");
+      sendMessage(mesDetails) //CALLS FUNCTION TO SEND MESSAGE TO WEB SOCKET
     }
   };
 
   // CALL API TO POPULATE FRIEND LIST
   useEffect(() => {
     setTimeout(() => {
-      setFriends({ data: onLineUsers ? [...onLineUsers, ...AllFriendList] : AllFriendList });
-      setFilteredFriends({ loading: false, data: onLineUsers ? [...onLineUsers, ...AllFriendList] : AllFriendList });
+      let allFriends = onLineUsers ? [...onLineUsers, ...AllFriendList] : AllFriendList
+      let friendsWithoutLoggedUser = allFriends.filter(friend => friend.id != userDetails._id) // FILTERS ALL FRIENDS TO REMOVE THE USER THAT IS LOGGED IN
+      setFriends({ data: friendsWithoutLoggedUser });
+      setFilteredFriends({ loading: false, data: friendsWithoutLoggedUser });
     }, 1000);
   }, [onLineUsers]);
-console.log(friends)
+
+
   // CALL API TO POPULATE CHAT
   useEffect(() => {
+    // setTimeout(() => {
+    //   // setFriends({data:AllFriendList})
+    //   setFilteredChats({ loading: false, data: chat });
+    // }, 1000);
     setTimeout(() => {
       // setFriends({data:AllFriendList})
-      setFilteredChats({ loading: false, data: chat });
+      let newData = {}
+      if(Object.keys(addNewMes).length){
+        newData = filteredChats.data.length ? [...filteredChats.data, addNewMes] : [...chat, addNewMes]
+      }else{
+        newData = filteredChats.data.length ? filteredChats.data : chat
+      }
+      setFilteredChats({loading:false, data:[...newData]});
+      setAddNewMes({})
     }, 1000);
-  }, [activeUser]);
+  }, [activeUser, addNewMes.time]);
 
   useEffect(()=>{  // FUNCTION TO MAKE THE CHAT SECTION ALWAYS SCROLLS TO BUTTON OF THE CHAT BOX SO USER CAN SEE LAST MESSAGE
     messageBoxSection?.current?.scrollTo({top:messageBoxSection.current.scrollHeight, behavior: 'smooth'})
@@ -169,17 +188,17 @@ console.log(friends)
                   {filteredChats.loading ? (
                     <p className="loading-dots">Loading</p>
                   ) : filteredChats.data.length > 0 ? (
-                    filteredChats.data.map((chat) => {
-                      return chat.sender == 2 ? (
+                    filteredChats.data.map((chat, index) => {
+                      return chat.sender != userDetails._id ? (
                         <div
-                          key={chat.id}
+                          key={chat.id ? chat.id : index+10}
                           className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-start"
                         >
                           {chat?.message}
                         </div>
                       ) : (
                         <div
-                          key={chat.id}
+                          key={chat.id ? chat.id : index+10}
                           className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200  bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-end"
                         >
                           {chat?.message}
