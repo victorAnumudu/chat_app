@@ -102,7 +102,7 @@ function DashboardHome({onLineUsers, sendMessage, addNewMes, setAddNewMes}) {
       let friendsWithoutLoggedUser = allFriends.filter(friend => friend.id != userDetails._id) // FILTERS ALL FRIENDS TO REMOVE THE USER THAT IS LOGGED IN
       setFriends({ data: friendsWithoutLoggedUser });
       setFilteredFriends({ loading: false, data: friendsWithoutLoggedUser });
-      console.log('allFriends',allFriends,'friendsWithoutLoggedUser',friendsWithoutLoggedUser)
+      console.log('allFriends',allFriends,'friendsWithoutLoggedUser',friendsWithoutLoggedUser, 'userDetails._id', userDetails._id)
     }, 1000);
   }, [onLineUsers]);
 
