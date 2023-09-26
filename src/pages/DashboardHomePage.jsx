@@ -18,7 +18,7 @@ function DashboardHomePage() {
       });
       setAddNewMes(newData)
     }else{
-      let dataWithoutDups = [] // Holds data with duplicates
+      let dataWithoutDups = [] // Holds data without duplicates
       data.forEach(element => {
         let elementExist = dataWithoutDups.find(item => (
           item.id == element.id
@@ -30,7 +30,6 @@ function DashboardHomePage() {
       setOnlineUsers(dataWithoutDups)
     }
   }
-
   // FUNCTION TO SEND MESSAGE TO SELECTED USER
   const sendMessage = (mesDetails) => {
     ws.send(JSON.stringify({
