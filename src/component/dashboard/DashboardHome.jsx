@@ -103,6 +103,7 @@ function DashboardHome({onLineUsers, sendMessage, addNewMes, setAddNewMes}) {
       setFriends({ data: friendsWithoutLoggedUser });
       setFilteredFriends({ loading: false, data: friendsWithoutLoggedUser });
     }, 1000);
+    console.log('allFriends',allFriends,'friendsWithoutLoggedUser',friendsWithoutLoggedUser)
   }, [onLineUsers]);
 
 
