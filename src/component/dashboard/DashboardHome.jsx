@@ -16,10 +16,15 @@ import MainHeader from "./mainContent/MainHeader";
 import SearchIcon from "../../assets/images/icons/search.svg";
 import LoadingIndicator from "../general/LoadingIndicator";
 
+import Services from '../../services/Services'
+
 import AllFriendList from "../../backend/AllFriendList";
 import { chat } from "../../backend/AllFriendList";
 
 function DashboardHome({onLineUsers, sendMessage, addNewMes, setAddNewMes}) {
+
+  const api = new Services()
+
   let {userDetails} = useSelector(state => state.userDetails) // LOGGED IN USER INFO
   const messageBoxSection = useRef();
 
@@ -81,7 +86,7 @@ function DashboardHome({onLineUsers, sendMessage, addNewMes, setAddNewMes}) {
         message: messageToSend,
         sender: userDetails._id,
         recipient: activeUser.id,
-        time: ''
+        time: Date.now()
       }
       // setFilteredChats((prev) => ({
       //   ...prev,
@@ -95,15 +100,40 @@ function DashboardHome({onLineUsers, sendMessage, addNewMes, setAddNewMes}) {
     }
   };
 
-  // CALL API TO POPULATE FRIEND LIST
+  // // CALL API TO POPULATE FRIEND LIST
   useEffect(() => {
-    setTimeout(() => {
-      let allFriends = onLineUsers ? [...onLineUsers, ...AllFriendList] : AllFriendList
-      let friendsWithoutLoggedUser = allFriends.filter(friend => friend.id != userDetails._id) // FILTERS ALL FRIENDS TO REMOVE THE USER THAT IS LOGGED IN
+    api.getUserFriends().then(({data})=>{
+      if(data.status < 1){
+        setFriends({ data: [] });
+        setFilteredFriends({ loading: false, data: [] });
+        return
+      }
+      // ADD THIS FOR NOW
+      data.result_data.forEach((item)=>{
+        item.id = item._id
+        item.lastMessage = 'No last message'
+        item.unreadMes = [1]
+        item.name = item.username
+      })
+      let allFriends = onLineUsers ? [...onLineUsers, ...data.result_data] : data.result_data
+   
+      // removing duplicate
+      let allFriendsWithoutDup = []
+      allFriends.forEach(element => {
+        let elementExist = allFriendsWithoutDup.find(item => (
+          item.id == element.id
+          ))
+          if(!elementExist){
+            allFriendsWithoutDup = [...allFriendsWithoutDup, {...element, lastMessage: 'Opps, that man na scam',unreadMes: [],about: 'working in power',image: '1'}]
+          }
+      });
+      let friendsWithoutLoggedUser = allFriendsWithoutDup.filter(friend => friend.id != userDetails._id) // FILTERS ALL FRIENDS TO REMOVE THE USER THAT IS LOGGED IN
       setFriends({ data: friendsWithoutLoggedUser });
       setFilteredFriends({ loading: false, data: friendsWithoutLoggedUser });
-      console.log('allFriends',allFriends,'friendsWithoutLoggedUser',friendsWithoutLoggedUser, 'userDetails._id', userDetails._id)
-    }, 1000);
+    }).catch(error=>{
+      setFriends({ data: [] });
+      setFilteredFriends({ loading: false, data: [] });
+    })
   }, [onLineUsers]);
 
 
@@ -113,18 +143,20 @@ function DashboardHome({onLineUsers, sendMessage, addNewMes, setAddNewMes}) {
     //   // setFriends({data:AllFriendList})
     //   setFilteredChats({ loading: false, data: chat });
     // }, 1000);
+    // setFilteredChats({loading: true, data: []})
     setTimeout(() => {
-      // setFriends({data:AllFriendList})
       let newData = {}
       if(Object.keys(addNewMes).length){
         newData = filteredChats.data.length ? [...filteredChats.data, addNewMes] : [...chat, addNewMes]
-      }else{
+      }
+      else{
         newData = filteredChats.data.length ? filteredChats.data : chat
+        // newData = chat
       }
       setFilteredChats({loading:false, data:[...newData]});
       setAddNewMes({})
-    }, 1000);
-  }, [activeUser, addNewMes.time]);
+    }, 500);
+  }, [activeUser?.id, addNewMes?.time]);
 
   useEffect(()=>{  // FUNCTION TO MAKE THE CHAT SECTION ALWAYS SCROLLS TO BUTTON OF THE CHAT BOX SO USER CAN SEE LAST MESSAGE
     messageBoxSection?.current?.scrollTo({top:messageBoxSection.current.scrollHeight, behavior: 'smooth'})
@@ -190,21 +222,25 @@ function DashboardHome({onLineUsers, sendMessage, addNewMes, setAddNewMes}) {
                     <p className="loading-dots">Loading</p>
                   ) : filteredChats.data.length > 0 ? (
                     filteredChats.data.map((chat, index) => {
-                      return chat.sender != userDetails._id ? (
-                        <div
-                          key={chat.id ? chat.id : index+10}
-                          className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-start"
-                        >
-                          {chat?.message}
-                        </div>
-                      ) : (
-                        <div
-                          key={chat.id ? chat.id : index+10}
-                          className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200  bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-end"
-                        >
-                          {chat?.message}
-                        </div>
-                      );
+                      if(chat.sender == activeUser.id || chat.recipient == activeUser.id){
+                        return chat.sender != userDetails._id ? (
+                          <div
+                            key={chat.id ? chat.id : index+10}
+                            className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-start"
+                          >
+                            {chat?.message}
+                          </div>
+                        ) : (
+                          <div
+                            key={chat.id ? chat.id : index+10}
+                            className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200  bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-end"
+                          >
+                            {chat?.message}
+                          </div>
+                        );
+                      }else{
+                        return <p>No chats with {activeUser.name} yet. please send a chat now!</p>
+                      }
                     })
                   ) : (
                     <p>No chats found</p>

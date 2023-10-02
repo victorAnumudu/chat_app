@@ -42,6 +42,15 @@ class Services {
     };
     return this.postAuxEnd("/profile", postData);
   }
+
+  // FUNCTION TO GET USER FRIEND LIST
+  getUserFriends() {
+    var postData = {
+      token: Cookies.get('_token')
+    };
+    return this.postAuxEnd("/friends", postData);
+  }
+
   //----------------------------------------  -----
   //----------------------------------------  -----
   // Unified call below

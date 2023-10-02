@@ -21,7 +21,9 @@ function MainHeader({user, toggleSection}) {
                             </div>
                         }
                         {/* online symbol */}
-                        <div className={`absolute bottom-1 right-2 w-[10px] h-[10px] rounded-full bg-green-500`}></div>
+                        {user.online &&
+                            <div className={`absolute bottom-1 right-2 w-[10px] h-[10px] rounded-full bg-green-500`}></div>
+                        }
                     </div>
                     
                     {/* USER DETAILS */}
