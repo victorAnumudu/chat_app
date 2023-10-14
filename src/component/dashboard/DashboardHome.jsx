@@ -226,15 +226,17 @@ function DashboardHome({onLineUsers, sendMessage, addNewMes, setAddNewMes}) {
                         return chat.sender != userDetails._id ? (
                           <div
                             key={chat.id ? chat.id : index+10}
-                            className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-start"
+                            className="relative p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200 bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-start"
                           >
+                            <div className="absolute w-0 h-0 top-1 -left-1 border-8 border-t-transparent border-r-transparent border-slate-700 dark:border-slate-200 rotate-45"></div>
                             {chat?.message}
                           </div>
                         ) : (
                           <div
                             key={chat.id ? chat.id : index+10}
-                            className="p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200  bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-end"
+                            className="relative p-4 max-w-[50%] rounded break-words text-[12px] md:text-sm text-slate-200  bg-slate-700 dark:text-slate-700 dark:bg-slate-200 self-end"
                           >
+                            <div className="absolute w-0 h-0 top-1 -right-1 border-8 border-b-transparent border-l-transparent border-slate-700 dark:border-slate-200 rotate-45"></div>
                             {chat?.message}
                           </div>
                         );
